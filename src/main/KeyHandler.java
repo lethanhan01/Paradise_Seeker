@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-	public boolean up, down, left, right, isFiring;
+	public boolean up, down, left, right, isFiring, f11;
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -23,6 +23,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			isFiring = true;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_F11) {
+			f11 = true;
 		}
 	}
 
@@ -43,6 +46,9 @@ public class KeyHandler implements KeyListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			isFiring = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_F11) {
+			f11 = false;
 		}
 	}
 

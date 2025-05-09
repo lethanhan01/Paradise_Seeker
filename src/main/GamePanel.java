@@ -1,5 +1,6 @@
 package main;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.JPanel;
@@ -7,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.awt.event.KeyListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,7 +17,7 @@ import java.awt.desktop.ScreenSleepEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
+public class GamePanel extends JPanel implements Runnable{
 
 	private static final String Thread = null;
 	//SCREEN SETTINGS
@@ -27,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	final int maxScreenRow = 24;
 	final int width = maxScreenCol * tileSize; 			// 32*96 = 3072 - 3072 pixels
 	final int height = maxScreenRow * tileSize; 		// 24*96 = 2304 - 2304 pixels
+	private BufferedImage backgroundImage;
 
 
 	KeyHandler keyH = new KeyHandler();
@@ -46,9 +50,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		this.setPreferredSize(new Dimension(width, height));
 		setFocusable(true);
 		setBackground(Color.BLACK);
+		
+		try {
+		    backgroundImage = ImageIO.read(getClass().getResourceAsStream("/background/test1.jpg"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 		requestFocus();
 		addKeyListener(keyH);
 		addMouseListener(mouseH);
+		addMouseMotionListener(mouseH);
 		setFocusable(true);
 	}
 	// GAME THREAD
@@ -110,10 +121,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		else if(keyH.right) {
 			playerX += playerSpeed;
 		}
+		else if(keyH.isFiring) {
+			
+		}
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		 if (backgroundImage != null) {
+	            g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+	        }
 
 		g2.setColor(Color.WHITE);
 
@@ -122,80 +139,5 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		g2.dispose();
 
 	}
-	public static JFrame window;
-	/*
-	public static void main(String[] args) {
-		window = new JFrame();
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Close (X) button
-		window.setResizable(false); // User unable to resize the window
-		window.setTitle("2D Adventure"); // Title of the Apps
 
-		// Call GamePanel
-		GamePanel gamePanel = new GamePanel();
-		window.add(gamePanel);
-
-		gamePanel.config.loadConfig();
-		if (gamePanel.fullScreenOn == true) {
-			window.setUndecorated(true);
-		}
-
-		window.pack();
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
-
-		gamePanel.setupGame();
-		gamePanel.startGameThread();
-	}
-	*/
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 }
